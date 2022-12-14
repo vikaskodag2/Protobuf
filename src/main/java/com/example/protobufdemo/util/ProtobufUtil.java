@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ProtobufUtil {
 
+    private ProtobufUtil() {
+    }
+
     public static String toJson(MessageOrBuilder message) throws InvalidProtocolBufferException {
         return JsonFormat.printer().print(message);
     }
