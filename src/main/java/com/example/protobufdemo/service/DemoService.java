@@ -12,5 +12,14 @@ public class DemoService {
     private DemoRepository demoRepository;
 
     public Course getCourses(int id) {
+        return this.demoRepository.getCourseById(id);
+    }
+
+    public Course addCourse(Course course) {
+        if (this.demoRepository.getAllCourses().containsKey(course.getId())) {
+            System.out.println("Course with id: " + course.getId() + " already exists!");
+            return this.demoRepository.getCourseById(course.getId());
+        }
+        return this.demoRepository.addCourse(course);
     }
 }
