@@ -1,9 +1,14 @@
 package com.demo.dao;
 
 import com.demo.Author;
+import com.demo.AuthorList;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.protobuf.util.JsonFormat;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,12 +16,19 @@ import java.util.Optional;
 public class AuthorDao {
     List<Author> authorList;
 
-    public AuthorDao() {
-        authorList = new ArrayList<>();
-        authorList.add(Author.newBuilder().setAuthorId(1).setBookId(1).setFirstName("Charles").setLastName("Dickens").setGender("male").build());
-        authorList.add(Author.newBuilder().setAuthorId(2).setFirstName("William").setLastName("Shakespeare").setGender("male").build());
-        authorList.add(Author.newBuilder().setAuthorId(3).setFirstName("JK").setLastName("Rowling").setGender("female").build());
-        authorList.add(Author.newBuilder().setAuthorId(4).setFirstName("Virginia").setLastName("Woolf").setGender("female").build());
+    public AuthorDao() throws IOException {
+        loadAuthorsFromJson();
+    }
+
+    private void loadAuthorsFromJson() throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream("data.json");
+        JsonNode jsonNode = mapper.readValue(in, JsonNode.class);
+        String json = mapper.writeValueAsString(jsonNode);
+
+        AuthorList authorListFromJson = fromJson(json);
+        this.authorList = authorListFromJson.getAuthorsList();
+        System.out.println("Added Authors from json: " + this.authorList.size());
     }
 
     public List<Author> getAllAuthors() {
@@ -27,5 +39,11 @@ public class AuthorDao {
         return authorList.stream()
                 .filter(author -> id == author.getAuthorId())
                 .findFirst();
+    }
+
+    private AuthorList fromJson(String json) throws IOException {
+        AuthorList.Builder structBuilder = AuthorList.newBuilder();
+        JsonFormat.parser().ignoringUnknownFields().merge(json, structBuilder);
+        return structBuilder.build();
     }
 }

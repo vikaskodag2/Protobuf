@@ -20,7 +20,16 @@ message Author {
 	int32 book_id = 5;
 }
 
+message AuthorList {
+	repeated Author authors = 1;
+}
+
+message AuthorListRequest {}
 
 service BookAuthorService {
-	rpc getAuthor(Author) returns(Author){}
+	rpc getAuthor(Author) returns(Author){};
+
+	rpc getAllAuthorStream(AuthorListRequest) returns(stream Author){};
+
+	rpc getAllAuthor(AuthorListRequest) returns(AuthorList){};
 }

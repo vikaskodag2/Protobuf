@@ -9,6 +9,7 @@
         <module>proto</module>
         <module>server</module>
         <module>client</module>
+        <module>rest-server</module>
     </modules>
 
     <groupId>com.demo</groupId>
