@@ -9,7 +9,8 @@ In this project I have developed 2 Servers, GRPC Server and RestServer which tak
   - GRPC (https://github.com/yidongnan/grpc-spring-boot-starter)
   - Protobuf (https://grpc.io/docs/languages/java/quickstart/)
 
-# Pojo used (60,000+ object of this was transferred) The json file can be found in resources folder of 2 server modules
+# Pojo used (60,000+ object of this was transferred) 
+> The json file can be found in resources folder of 2 server modules
 ```
 public class AuthorDTO {
     private String authorId;
